@@ -1,0 +1,46 @@
+/* Container Dashboard */
+#dashboardContainer {
+    width: 380px;
+    margin: 50px auto;
+    background: #11151c;
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-family: Arial;
+}
+
+/* Foto Profil (besar untuk halaman Home saja) */
+.profile-img-large {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #2ac2f2;
+    margin: 20px auto;
+}
+
+/* Foto Profil kecil untuk menu lain */
+.profile-img-small {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #2ac2f2;
+    cursor: pointer;
+}
+
+/* Tombol */
+.btn {
+    width: 80%;
+    padding: 12px;
+    margin: 8px auto;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-edit { background: #ffb319; }
+.btn-order { background: #2296f3; }
+.btn-logout { background: #ff5252; }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- HEADER / NAVBAR -->
+<header>
+  <div class="navbar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo" />
+      <h1 class="brand">Coffee Campuss</h1>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="pages.html">Pages</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- PROFILE ICON -->
+        <li id="profileLi" style="display:none;">
+          <a href="member-dashboard.html">
+            <img id="navProfileImg" src="profile.jpg" alt="Profile" class="profile-icon">
+          </a>
+        </li>
+
+        <!-- SIGN UP -->
+        <li id="signupLi">
+          <a href="signup.html" class="signup-btn">Sign Up</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>We Offer A Delicious Variety Of Coffee</h1>
+    <p>We have everything from classic coffee to our house-made specialty beverages.</p>
+    <a href="booktable.html" class="booktable">Book a Table</a>
+  </div>
+</section>
+
+<!-- POPULAR MENU -->
+<section class="menu-section">
+  <h2>Coffee Popular Menu</h2>
+  <p>Enjoy our most popular coffee selections crafted with passion.</p>
+
+  <div class="menu-container">
+    <div class="menu-card">
+      <img src="menu1.jpeg" alt="American Coffee" />
+      <h3>American Coffee</h3>
+      <p class="price">Rp 12.000</p>
+    </div>
+
+    <div class="menu-card">
+      <img src="menu2.jpeg" alt="Caffe Latte" />
+      <h3>Caffe Latte</h3>
+      <p class="price">Rp 14.000</p>
+    </div>
+
+    <div class="menu-card">
+      <img src="menu3.jpeg" alt="Coffee Mocha" />
+      <h3>Coffee Mocha</h3>
+      <p class="price">Rp 10.000</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Coffee Campuss | Designed by Kelompok 2</p>
+</footer>
+
+<!-- ================================= -->
+<!-- AUTO LOGIN NAVBAR (FINAL VERSION) -->
+<!-- ================================= -->
+<script>
+  const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+
+  if (loginUser) {
+    // Sembunyikan Sign Up
+    document.getElementById("signupLi").style.display = "none";
+    document.getElementById("profileLi").style.display = "block";
+
+    // Set foto profil
+    const img = document.getElementById("navProfileImg");
+    img.src = loginUser.foto && loginUser.foto !== ""
+      ? loginUser.foto
+      : "profile.jpg";
+  }
+</script>
+
+</body>
+</html>

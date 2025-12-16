@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<style>
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0d1117;
+  color:white;
+}
+#loginBox {
+  width: 350px;
+  margin: 120px auto;
+  background:#161b22;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+#loginBox input {
+  width:100%; padding:10px; margin:10px 0;
+  border:none; border-radius:6px;
+}
+#loginBox button {
+  width:100%; padding:12px; border:none;
+  background:#00bfff; color:white; font-weight:bold;
+  border-radius:6px; cursor:pointer;
+}
+header {
+  background:#1f2937;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1 { margin:0; font-size:22px; }
+.logout-btn {
+  background:red; padding:8px 16px;
+  border:none; border-radius:6px; color:white;
+  font-size:14px; cursor:pointer;
+}
+.admin-container {
+  width:92%; margin:auto; margin-top:20px;
+}
+.admin-box {
+  background:#161b22;
+  padding:20px;
+  border-radius:10px;
+  margin-top:20px;
+  box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+.admin-box input {
+  width:100%; padding:10px; margin:8px 0;
+  border:none; border-radius:6px;
+}
+.btn-primary {
+  background:#00bfff; padding:10px 16px;
+  border:none; border-radius:6px;
+  color:white; cursor:pointer; margin-top:8px;
+}
+.btn-danger {
+  background:#e63946; padding:10px;
+  border:none; border-radius:6px;
+  color:white; cursor:pointer;
+}
+.menu-row, .pay-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#20242d;
+  padding:10px;
+  border-radius:6px;
+  margin-top:10px;
+}
+.menu-row img, .pay-row img {
+  width:70px; height:70px; border-radius:6px; object-fit:cover;
+}
+.meta {
+  display:flex; gap:15px; align-items:center;
+}
+</style>
+</head>
+<body>
+<header id="adminPanel" style="display:none;">
+    <h1>Admin Panel</h1>
+    <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+</header>
+<div id="loginBox">
+  <h2 style="text-align:center;">Login Admin</h2>
+  <input type="text" id="adminUser" placeholder="Username">
+  <input type="password" id="adminPass" placeholder="Password">
+  <button onclick="loginAdmin()">Login</button>
+</div>
+<div class="admin-container" id="adminContent" style="display:none;">
+  <h2>Kelola Menu</h2>
+  <div class="admin-box">
+      <input type="text" id="menuName" placeholder="Nama menu">
+      <input type="number" id="menuPrice" placeholder="Harga menu">
+      <input type="file" id="menuImg">
+      <button class="btn-primary" onclick="addMenu()">Tambah Menu</button>
+  </div>
+  <div id="menuList"></div>
+  <h2 style="margin-top:35px;">Kelola Metode Pembayaran</h2>
+  <div class="admin-box">
+      <input type="text" id="payName" placeholder="Nama Metode (QRIS, BCA, Dana)">
+      <input type="text" id="payAccount" placeholder="Nomor / ID pembayaran">
+      <input type="text" id="payDesc" placeholder="Deskripsi">
+      <input type="file" id="payQR">
+      <button class="btn-primary" onclick="addPayment()">Tambah Pembayaran</button>
+  </div>
+  <div id="paymentList"></div>
+</div>
+<script>
+function loginAdmin() {
+    let u = adminUser.value;
+    let p = adminPass.value;
+    if (u === "admin" && p === "12345") {
+        localStorage.setItem("adminLogin", "true");
+        showPanel();
+    } else alert("Username/Password salah!");
+}
+function showPanel() {
+    loginBox.style.display = "none";
+    adminPanel.style.display = "flex";
+    adminContent.style.display = "block";
+}
+function logoutAdmin() {
+    localStorage.removeItem("adminLogin");
+    location.href = "signup.html";
+}
+if(localStorage.getItem("adminLogin")) showPanel();
+function readImg(file, callback) {
+    let reader = new FileReader();
+    reader.onload = () => callback(reader.result);
+    reader.readAsDataURL(file);
+}
+let menuData = JSON.parse(localStorage.getItem("menuData")) || [];
+function addMenu() {
+    let name = menuName.value;
+    let price = menuPrice.value;
+    let imgFile = menuImg.files[0];
+    if (!name || !price || !imgFile) return alert("Lengkapi data!");
+    readImg(imgFile, (imgBase64) => {
+        menuData.push({ name, price, img: imgBase64 });
+        localStorage.setItem("menuData", JSON.stringify(menuData));
+        renderMenu();
+        menuName.value = ""; menuPrice.value=""; menuImg.value="";
+    });
+}
+function deleteMenu(i){
+    if(!confirm("Hapus?")) return;
+    menuData.splice(i,1);
+    localStorage.setItem("menuData", JSON.stringify(menuData));
+    renderMenu();
+}
+function renderMenu(){
+    menuList.innerHTML = "";
+    menuData.forEach((m,i)=>{
+        menuList.innerHTML += `
+            <div class="menu-row">
+                <div class="meta">
+                    <img src="${m.img}">
+                    <div><strong>${m.name}</strong><br>Rp ${parseInt(m.price).toLocaleString()}</div>
+                </div>
+                <button class="btn-danger" onclick="deleteMenu(${i})">Hapus</button>
+            </div>`;
+    });
+}
+renderMenu();
+let paymentSettings = JSON.parse(localStorage.getItem("paymentSettings")) || [];
+function addPayment(){
+    let name = payName.value;
+    let acc = payAccount.value;
+    let desc = payDesc.value;
+    let qrFile = payQR.files[0];
+    if(!name || !acc) return alert("Nama & nomor wajib!");
+    if(name.toUpperCase()==="QRIS" && !qrFile) return alert("QRIS wajib upload QR!");
+    if(!qrFile){
+        paymentSettings.push({name, account:acc, description:desc, qr:null});
+        localStorage.setItem("paymentSettings",JSON.stringify(paymentSettings));
+        renderPayment(); return;
+    }
+    readImg(qrFile, (qrBase64)=>{
+        paymentSettings.push({name, account:acc, description:desc, qr:qrBase64});
+        localStorage.setItem("paymentSettings",JSON.stringify(paymentSettings));
+        renderPayment();
+    });
+}
+function deletePayment(i){
+    if(!confirm("Hapus metode?")) return;
+    paymentSettings.splice(i,1);
+    localStorage.setItem("paymentSettings", JSON.stringify(paymentSettings));
+    renderPayment();
+}
+function renderPayment(){
+    paymentList.innerHTML = "";
+    paymentSettings.forEach((p,i)=>{
+        paymentList.innerHTML += `
+        <div class="pay-row">
+            <div class="meta">
+                ${p.qr ? `<img src="${p.qr}">` : `<div style='width:70px;height:70px;background:#333;'></div>`}
+                <div><strong>${p.name}</strong><br>${p.account}<br><small>${p.description}</small></div>
+            </div>
+            <button class="btn-danger" onclick="deletePayment(${i})">Hapus</button>
+        </div>`;
+    });
+}
+renderPayment();
+</script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0d1117;
+  color:white;
+}
+
+/* LOGIN PAGE */
+#loginBox {
+  width: 350px;
+  margin: 120px auto;
+  background:#161b22;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+#loginBox input {
+  width:100%; padding:10px; margin:10px 0;
+  border:none; border-radius:6px;
+}
+#loginBox button {
+  width:100%; padding:12px; border:none;
+  background:#00bfff; color:white; font-weight:bold;
+  border-radius:6px; cursor:pointer;
+}
+
+/* ADMIN HEADER */
+header {
+  background:#1f2937;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1 { margin:0; font-size:22px; }
+.logout-btn {
+  background:red; padding:8px 16px;
+  border:none; border-radius:6px; color:white;
+}
+
+/* WRAPPER */
+.admin-container {
+  width:92%; margin:auto; margin-top:20px;
+}
+
+/* BOX */
+.admin-box {
+  background:#161b22;
+  padding:20px;
+  border-radius:10px;
+  margin-top:20px;
+  box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+/* INPUTS */
+.admin-box input {
+  width:100%; padding:10px; margin:8px 0;
+  border:none; border-radius:6px;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background:#00bfff; padding:10px 16px;
+  border:none; border-radius:6px;
+  color:white; cursor:pointer; margin-top:8px;
+}
+.btn-danger {
+  background:#e63946; padding:10px;
+  border:none; border-radius:6px;
+  color:white; cursor:pointer;
+}
+
+/* LIST */
+.menu-row, .pay-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#20242d;
+  padding:10px;
+  border-radius:6px;
+  margin-top:10px;
+}
+.menu-row img, .pay-row img {
+  width:70px; height:70px; border-radius:6px; object-fit:cover;
+}
+.meta {
+  display:flex; gap:15px; align-items:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginBox">
+  <h2 style="text-align:center;">Admin Login</h2>
+  <input type="text" id="adminUser" placeholder="Username Admin">
+  <input type="password" id="adminPass" placeholder="Password Admin">
+  <button onclick="loginAdmin()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none;">
+
+<header>
+  <h1>Admin Panel</h1>
+  <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+</header>
+
+<div class="admin-container">
+
+  <h2>Kelola Menu</h2>
+  <div class="admin-box">
+      <input type="text" id="menuName" placeholder="Nama menu">
+      <input type="number" id="menuPrice" placeholder="Harga menu">
+      <input type="file" id="menuImg">
+      <button class="btn-primary" onclick="addMenu()">Tambah Menu</button>
+  </div>
+
+  <div id="menuList"></div>
+
+  <h2 style="margin-top:35px;">Kelola Metode Pembayaran</h2>
+  <div class="admin-box">
+      <input type="text" id="payName" placeholder="Nama Metode (QRIS, Dana, BCA)">
+      <input type="text" id="payAccount" placeholder="Nomor / ID pembayaran">
+      <input type="text" id="payDesc" placeholder="Deskripsi">
+      <input type="file" id="payQR">
+      <button class="btn-primary" onclick="addPayment()">Tambah Pembayaran</button>
+  </div>
+
+  <div id="paymentList"></div>
+
+</div>
+</div>
+
+<script>
+/* ========================
+      ADMIN LOGIN
+=========================*/
+function loginAdmin() {
+    let u = document.getElementById("adminUser").value;
+    let p = document.getElementById("adminPass").value;
+
+    if (u === "admin" && p === "12345") {
+        localStorage.setItem("adminLogin", "true");
+        showPanel();
+    } else {
+        alert("Username/Password salah!");
+    }
+}
+
+function showPanel() {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+}
+
+function logoutAdmin() {
+    localStorage.removeItem("adminLogin");
+    location.reload();
+}
+
+if (localStorage.getItem("adminLogin")) showPanel();
+
+/* ========================
+      MENU SYSTEM
+=========================*/
+let menuData = JSON.parse(localStorage.getItem("menuData")) || [];
+
+function readImg(file, callback) {
+    let reader = new FileReader();
+    reader.onload = () => callback(reader.result);
+    reader.readAsDataURL(file);
+}
+
+function addMenu() {
+    let name = document.getElementById("menuName").value;
+
+    
+    let price = document.getElementById("menuPrice").value.replace(/\./g, "");
+
+    let imgFile = document.getElementById("menuImg").files[0];
+
+    if (!name || !price || !imgFile) {
+        alert("Lengkapi semua data menu!");
+        return;
+    }
+
+    readImg(imgFile, (imgBase64) => {
+        menuData.push({ name, price, img: imgBase64 });
+        localStorage.setItem("menuData", JSON.stringify(menuData));
+        renderMenu();
+    });
+}
+
+function deleteMenu(i) {
+    if (!confirm("Hapus menu ini?")) return;
+    menuData.splice(i, 1);
+    localStorage.setItem("menuData", JSON.stringify(menuData));
+    renderMenu();
+}
+
+function renderMenu() {
+    const box = document.getElementById("menuList");
+    box.innerHTML = "";
+
+    menuData.forEach((m,i) => {
+        box.innerHTML += `
+            <div class="menu-row">
+                <div class="meta">
+                    <img src="${m.img}">
+                    <div>
+                        <strong>${m.name}</strong><br>
+                        Rp ${parseInt(m.price).toLocaleString()}
+                    </div>
+                </div>
+                <button class="btn-danger" onclick="deleteMenu(${i})">Hapus</button>
+            </div>
+        `;
+    });
+}
+renderMenu();
+
+/* ========================
+   PAYMENT SYSTEM
+=========================*/
+
+let paymentSettings = JSON.parse(localStorage.getItem("paymentSettings")) || [];
+
+function addPayment() {
+    let name = document.getElementById("payName").value;
+    let acc = document.getElementById("payAccount").value;
+    let desc = document.getElementById("payDesc").value;
+
+    if (!name || !acc || !qrFile) {
+        alert("Isi nama, nomor & upload QR!");
+        return;
+    }
+
+    readImg(qrFile, (qrBase64) => {
+        paymentSettings.push({ name, account: acc, description: desc, qr: qrBase64 });
+        localStorage.setItem("paymentSettings", JSON.stringify(paymentSettings));
+        renderPayment();
+    });
+}
+
+function deletePayment(i) {
+    if (!confirm("Hapus metode?")) return;
+    paymentSettings.splice(i, 1);
+    localStorage.setItem("paymentSettings", JSON.stringify(paymentSettings));
+    renderPayment();
+}
+
+function renderPayment() {
+    const box = document.getElementById("paymentList");
+    box.innerHTML = "";
+
+    paymentSettings.forEach((p,i) => {
+        box.innerHTML += `
+            <div class="pay-row">
+                <div class="meta">
+                    <img src="${p.qr}">
+                    <div>
+                        <strong>${p.name}</strong><br>
+                        ${p.account}<br>
+                        ${p.description}
+                    </div>
+                </div>
+                <button class="btn-danger" onclick="deletePayment(${i})">Hapus</button>
+            </div>
+        `;
+    });
+}
+renderPayment();
+</script>
+
+</body>
+</html>

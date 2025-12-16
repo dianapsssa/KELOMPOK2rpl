@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riwayat Transaksi</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('baground.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+}
+body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+
+/* Header */
+header {
+    background: linear-gradient(to right, #001a66, #0033cc);
+    padding: 10px 40px;
+    height: 75px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo {
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.logo img {
+    width: 60px;
+    height: 60px;
+    border-radius:50%;
+}
+
+nav ul {
+    list-style:none;
+    display:flex;
+    gap:40px;
+}
+nav ul li a {
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:600;
+}
+
+h2 {
+    text-align:center;
+    margin-top:30px;
+    color:#00ffcc;
+}
+
+/* Container kartu */
+.transaction-container {
+    width:90%;
+    margin:25px auto;
+    background:rgba(255,255,255,0.15);
+    padding:20px;
+    border-radius:15px;
+    backdrop-filter:blur(10px);
+}
+
+.summary {
+    display:flex;
+    justify-content:space-between;
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:20px;
+    color:#00ffcc;
+}
+
+/* Tabel */
+table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+table th, table td {
+    border:1px solid rgba(255,255,255,0.3);
+    padding:12px;
+    text-align:center;
+}
+table th {
+    background:rgba(0,0,0,0.4);
+}
+table tr:nth-child(even) {
+    background:rgba(255,255,255,0.1);
+}
+
+/* Tombol */
+.btn-delete {
+    background:#ff4444;
+    color:white;
+    padding:7px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    border:none;
+}
+.btn-delete:hover {
+    background:#cc0000;
+}
+
+.btn-clear {
+    background:#ff0000;
+    display:block;
+    margin:20px auto;
+    padding:13px 30px;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+}
+.btn-clear:hover { background:#b30000; }
+
+.back-btn {
+    display:block;
+    text-align:center;
+    margin-top:25px;
+    padding:12px 30px;
+    background:#00ffcc;
+    color:black;
+    font-size:18px;
+    text-decoration:none;
+    border-radius:10px;
+}
+.back-btn:hover { background:#00d4aa; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+        <h1>Coffe Campuss</h1>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="signup.html">Admin Panel</a></li>
+            <li><a href="home.html">Home</a></li>
+        </ul>
+    </nav>
+</header>
+
+<h2>Riwayat Transaksi</h2>
+
+<div class="transaction-container">
+    <div class="summary">
+        <div>Total Transaksi: <span id="countTransaksi">0</span></div>
+        <div>Total Pemasukan: Rp <span id="totalPemasukan">0</span></div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Tanggal & Waktu</th>
+                <th>Nomor Antrian</th>
+                <th>Metode</th>
+                <th>Total</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody id="historyTable"></tbody>
+    </table>
+
+    <button class="btn-clear" onclick="clearAll()">HAPUS SEMUA RIWAYAT</button>
+</div>
+
+<a href="signup.html" class="back-btn">Kembali ke Admin Panel</a>
+
+<script>
+function loadHistory() {
+    let data = JSON.parse(localStorage.getItem("transactionHistory")) || [];
+    let table = document.getElementById("historyTable");
+    let totalPemasukan = 0;
+
+    table.innerHTML = "";
+
+    data.forEach((item, index) => {
+        totalPemasukan += item.total;
+
+        table.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.waktu}</td>
+                <td>${item.antrian}</td>
+                <td>${item.metode}</td>
+                <td>Rp ${item.total.toLocaleString("id-ID")}</td>
+                <td><button class="btn-delete" onclick="deleteOne(${item.id})">Hapus</button></td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("totalPemasukan").textContent = totalPemasukan.toLocaleString("id-ID");
+    document.getElementById("countTransaksi").textContent = data.length;
+}
+
+// Hapus satu transaksi
+function deleteOne(id) {
+    let data = JSON.parse(localStorage.getItem("transactionHistory")) || [];
+    let newData = data.filter(item => item.id !== id);
+    localStorage.setItem("transactionHistory", JSON.stringify(newData));
+    loadHistory();
+}
+
+// Hapus semua transaksi
+function clearAll() {
+    if (confirm("Yakin ingin menghapus semua riwayat?")) {
+        localStorage.removeItem("transactionHistory");
+        loadHistory();
+    }
+}
+
+loadHistory();
+</script>
+
+</body>
+</html>

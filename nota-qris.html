@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nota Pembayaran + QRIS</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    margin: 0;
+    padding: 20px;
+}
+
+.nota-container {
+    background: white;
+    max-width: 650px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+hr {
+    margin: 15px 0;
+    border: 1px solid #ddd;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+table th, table td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.total-box {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.info {
+    margin: 10px 0;
+}
+
+.qris-box {
+    text-align: center;
+    padding: 15px;
+    background: #fafafa;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+}
+
+.qris-box img {
+    width: 220px;
+    margin-top: 10px;
+}
+
+button {
+    width: 48%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.print-btn {
+    background: #007bff;
+    color: white;
+}
+
+.back-btn {
+    background: #555;
+    color: white;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+
+</head>
+<body>
+
+<div class="nota-container">
+    <h2>Nota Pembayaran</h2>
+    <hr>
+
+    <div class="info"><strong>Nama Pelanggan:</strong> <span id="namaPelanggan"></span></div>
+    <div class="info"><strong>Metode Pembayaran:</strong> <span id="metodePembayaran"></span></div>
+
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Menu</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyNota"></tbody>
+    </table>
+
+    <div class="total-box">
+        Total: Rp <span id="totalHarga"></span>
+    </div>
+
+    <!-- QRIS MUNCUL OTOMATIS JIKA METODE = QRIS -->
+    <div id="qrisSection" class="qris-box" style="display:none;">
+        <h3>QRIS Pembayaran</h3>
+        <p>Silakan scan QR berikut untuk pembayaran.</p>
+        <img id="qrisImage" src="EXQris.jpeg" alt="QRIS">
+        <p><strong>Merchant:</strong> Coffee Campus</p>
+        <p><strong>Total Dibayar:</strong> Rp <span id="qrisTotal"></span></p>
+    </div>
+
+    <div class="btn-container">
+        <button class="print-btn" onclick="window.print()">Cetak Nota</button>
+        <button class="back-btn" onclick="window.location.href='menu.html'">Kembali</button>
+    </div>
+</div>
+
+<script>
+/* ===============================
+      LOAD DATA DARI MENU.HTML
+================================ */
+let keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
+let totalHarga = localStorage.getItem("totalHarga") || 0;
+let nama = localStorage.getItem("namaPelanggan") || "-";
+let metode = localStorage.getItem("metodePembayaran") || "-";
+
+// Tampilkan info pelanggan
+document.getElementById("namaPelanggan").innerText = nama;
+document.getElementById("metodePembayaran").innerText = metode;
+
+// Render tabel
+let tbody = document.getElementById("tbodyNota");
+keranjang.forEach(item => {
+    let subtotal = item.harga * item.qty;
+
+    tbody.innerHTML += `
+        <tr>
+            <td>${item.nama}</td>
+            <td>${item.qty}</td>
+            <td>Rp ${subtotal.toLocaleString()}</td>
+        </tr>
+    `;
+});
+
+// Total harga
+document.getElementById("totalHarga").innerText = parseInt(totalHarga).toLocaleString();
+
+/* ===============================
+      QRIS OTOMATIS
+================================ */
+if (metode.toLowerCase() === "qris") {
+    document.getElementById("qrisSection").style.display = "block";
+    document.getElementById("qrisTotal").innerText = parseInt(totalHarga).toLocaleString();
+
+    // Buat QRIS otomatis menggunakan API Google Chart
+    let qrisData = `QRIS|CoffeeCampus|TOTAL=${totalHarga}`;
+    let qrURL = `https://tse3.mm.bing.net/th/id/OIP.qd7dagivpleWwS4dwW7_tgHaHa?pid=Api&P=0&h=180${encodeURIComponent(qrisData)}`;
+
+    document.getElementById("qrisImage").src = qrURL;
+}
+
+</script>
+
+</body>
+</html>

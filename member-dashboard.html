@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Aplikasi</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+header {
+  background: #1e3a8a;
+  color: white;
+  padding: 15px 25px;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#app { display: flex; height: 100vh; }
+.sidebar {
+  width: 220px;
+  background: #0f172a;
+  color: white;
+  padding-top: 20px;
+}
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+.sidebar a:hover {
+  background: #1e293b;
+}
+.sidebar img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4f46e5;
+}
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+.profile-img-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #1e3a8a;
+}
+.input-box {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+}
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 5px;
+}
+.btn-save { background: #16a34a; color: white; }
+.btn-back { background: #f59e0b; color: white; }
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+.order-item {
+  padding: 8px;
+  margin-bottom: 5px;
+  background: #eef;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  Dashboard Aplikasi
+  <span id="headerUser"></span>
+</header>
+
+<div id="app">
+
+  <div class="sidebar">
+    <a href="home.html">
+      Home
+    </a>
+
+    <a href="#" onclick="loadEditProfile()">
+      Edit Profil
+    </a>
+
+    <a href="#" onclick="loadRiwayat()">
+      Riwayat Pesanan
+    </a>
+
+    <a href="#" onclick="loadLogout()">
+      Logout
+    </a>
+  </div>
+
+  <div class="content" id="dashboardBox"></div>
+</div>
+
+<script>
+/* ===========================================
+   CEK LOGIN
+=========================================== */
+let loginUser = JSON.parse(localStorage.getItem("loginUser"));
+let memberDB  = JSON.parse(localStorage.getItem("memberDB")) || [];
+
+if (!loginUser) {
+  window.location.href = "signup.html";
+}
+
+/* ===========================================
+   AMBIL DATA USER AKTIF DARI DATABASE
+=========================================== */
+let userIndex = memberDB.findIndex(u => u.email === loginUser.email);
+let userData  = memberDB[userIndex];
+
+/* ===========================================
+   SAVE KE DATABASE + SESSION
+=========================================== */
+function saveUserData() {
+  memberDB[userIndex] = userData;
+  localStorage.setItem("memberDB", JSON.stringify(memberDB));
+  localStorage.setItem("loginUser", JSON.stringify(userData));
+}
+
+/* ===========================================
+   HEADER
+=========================================== */
+function refreshHeader() {
+  document.getElementById("headerUser").innerText = userData.nama;
+}
+
+/* ===========================================
+   DASHBOARD HOME
+=========================================== */
+function loadHomeDashboard() {
+  document.getElementById("dashboardBox").innerHTML = `
+    <div class="card" style="text-align:center;">
+      <img src="${userData.foto || 'profile.jpg'}" class="profile-img-large">
+
+      <h2>${userData.nama}</h2>
+      <p>Email: ${userData.email}</p>
+      <p>No HP: ${userData.hp}</p>
+      <p><b>Level:</b> ${userData.level}</p>
+      <p><b>Poin:</b> ${userData.point}</p>
+      <p><b>Total Pesanan:</b> ${userData.pesanan}</p>
+    </div>
+  `;
+}
+
+/* ===========================================
+   EDIT PROFIL
+=========================================== */
+function loadEditProfile() {
+  document.getElementById("dashboardBox").innerHTML = `
+    <div class="card" style="text-align:center;">
+      <h2>Edit Profil</h2>
+
+      <img src="${userData.foto || 'profile.jpg'}" class="profile-img-large">
+
+      <input type="file" id="uploadFoto" class="input-box">
+      <input type="text" id="editNama" value="${userData.nama}" class="input-box">
+      <input type="email" id="editEmail" value="${userData.email}" class="input-box">
+      <input type="text" id="editHp" value="${userData.hp}" class="input-box">
+
+      <button class="btn btn-save" onclick="saveProfile()">Simpan</button>
+      <button class="btn btn-back" onclick="loadHomeDashboard()">Kembali</button>
+    </div>
+  `;
+}
+
+function saveProfile() {
+  let fotoFile = document.getElementById("uploadFoto").files[0];
+
+  userData.nama  = document.getElementById("editNama").value;
+  userData.email = document.getElementById("editEmail").value;
+  userData.hp    = document.getElementById("editHp").value;
+
+  if (fotoFile) {
+    let reader = new FileReader();
+    reader.onload = e => {
+      userData.foto = e.target.result;
+      saveUserData();
+      alert("Profil berhasil diperbarui");
+      loadHomeDashboard();
+      refreshHeader();
+    };
+    reader.readAsDataURL(fotoFile);
+  } else {
+    saveUserData();
+    alert("Profil berhasil diperbarui");
+    loadHomeDashboard();
+    refreshHeader();
+  }
+}
+
+/* ===========================================
+   RIWAYAT PESANAN (PER USER)
+=========================================== */
+function loadRiwayat() {
+  let riwayat = userData.riwayat || [];
+
+  if (riwayat.length === 0) {
+    document.getElementById("dashboardBox").innerHTML = `
+      <div class="card">
+        <h2>Riwayat Pesanan</h2>
+        <p>Belum ada pesanan.</p>
+        <button class="btn btn-back" onclick="loadHomeDashboard()">Kembali</button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `<div class="card"><h2>Riwayat Pesanan</h2>`;
+
+  riwayat.reverse().forEach(o => {
+    html += `
+      <div class="order-item">
+        <b>${o.tanggal}</b><br>
+        Total: Rp ${o.total.toLocaleString()}
+      </div>
+    `;
+  });
+
+  html += `<button class="btn btn-back" onclick="loadHomeDashboard()">Kembali</button></div>`;
+  document.getElementById("dashboardBox").innerHTML = html;
+}
+
+/* ===========================================
+   LOGOUT
+=========================================== */
+function loadLogout() {
+  localStorage.removeItem("loginUser");
+  window.location.href = "signup.html";
+}
+
+/* ===========================================
+   INIT
+=========================================== */
+refreshHeader();
+loadHomeDashboard();
+</script>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesanan Berhasil</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f7f4;
+    text-align: center;
+    margin: 0;
+    padding-top: 100px;
+}
+
+.box {
+    width: 350px;
+    margin: auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+h2 {
+    color: #0d6b4d;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    color: #444;
+}
+
+.histori-box {
+    margin-top: 15px;
+    text-align: left;
+    background: #e8f5e9;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #0d4d35;
+}
+
+.btn {
+    margin-top: 15px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-home {
+    background: #1b704f;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.btn-nota {
+    background: #0d4d35;
+    color: white;
+}
+
+.btn-print {
+    background: #063b2a;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+    <h2>🎉 Pesanan Berhasil!</h2>
+    <p>Terima kasih telah melakukan pemesanan.</p>
+    <p>Pesanan Anda sedang diproses.</p>
+
+    <!-- 📌 Histori Pesanan Terakhir -->
+    <div id="historiContainer" class="histori-box">
+        Memuat riwayat pesanan...
+    </div>
+
+    <!-- 🔥 Tombol Cetak Nota -->
+    <button class="btn btn-print" onclick="cetakNota()">Cetak Nota</button>
+
+    <!-- 🔙 Tombol Kembali -->
+    <button class="btn btn-home" onclick="goHome()">Kembali ke Menu</button>
+</div>
+
+<script>
+// ==============================
+// 📌 Tampilkan histori pesanan terakhir
+// ==============================
+let riwayat = JSON.parse(localStorage.getItem("riwayatPesanan")) || [];
+
+let container = document.getElementById("historiContainer");
+
+if (riwayat.length === 0) {
+    container.innerHTML = "Belum ada riwayat pesanan.";
+} else {
+    let last = riwayat[riwayat.length - 1]; // Pesanan terakhir
+
+    container.innerHTML = `
+        <b>Riwayat Terbaru:</b><br>
+        ID Transaksi: ${last.id} <br>
+        Nama: ${last.pelanggan} <br>
+        Metode: ${last.metode} <br>
+        Total: Rp ${parseInt(last.total).toLocaleString()} <br>
+        Antrian: ${last.antrian} <br>
+        Tanggal: ${last.tanggal} ${last.waktu}
+    `;
+}
+
+// ==============================
+// 📌 Tombol Cetak Nota (langsung print)
+// ==============================
+function cetakNota() {
+    window.location.href = "nota.html?done=1#print";
+}
+
+// ==============================
+// 📌 Tombol Kembali ke Home/Menu
+// ==============================
+function goHome() {
+    window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>

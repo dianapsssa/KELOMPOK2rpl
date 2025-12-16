@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pembayaran</title>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <img src="logo.png" alt="Logo" />
+        <div class="title">
+          <h1>Coffe Campuss</h1>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="pages.html">Pages</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="signup.html" class="signup-btn">Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.signup-btn:hover { background:#e09e00; }
+
+h2 {
+  margin-top:30px;
+  color:#00ffcc;
+  text-align:center;
+}
+
+.payment-list {
+  width:90%;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+  gap:20px;
+}
+
+.card {
+  background:rgba(255,255,255,0.15);
+  border-radius:15px;
+  padding:20px;
+  backdrop-filter:blur(8px);
+  text-align:center;
+}
+
+.card img {
+  width:150px; height:150px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+/* --- Tombol Lanjut --- */
+.next-btn {
+  display:block;
+  margin: 30px auto;
+  background:#00ffcc;
+  color:#000;
+  padding: 15px 35px;
+  border-radius:10px;
+  font-size:20px;
+  text-decoration:none;
+  font-weight:bold;
+  text-align:center;
+  transition:0.3s;
+}
+.next-btn:hover { background:#00d4aa; }
+</style>
+
+<h2>Metode Pembayaran</h2>
+
+<div class="payment-list" id="paymentList">Memuat...</div>
+
+<!-- Tombol Lanjut -->
+<div id="nextButtonContainer" style="text-align:center; margin-bottom:40px;"></div>
+
+<script>
+let payments = JSON.parse(localStorage.getItem("paymentSettings")) || [];
+
+function renderPayments() {
+    const list = document.getElementById("paymentList");
+    const nextBtnBox = document.getElementById("nextButtonContainer");
+
+    list.innerHTML = "";
+    nextBtnBox.innerHTML = "";
+
+    if (payments.length === 0) {
+        list.innerHTML = "<h3 style='grid-column:1/-1;text-align:center;'>Belum ada metode pembayaran</h3>";
+        return;
+    }
+
+    payments.forEach(p => {
+        list.innerHTML += `
+            <div class="card">
+                ${p.name.toLowerCase() === "qris" ? `<img src="${p.qr}" alt="QRIS">` : ""}
+                <h3>${p.name}</h3>
+                <p><strong>${p.account}</strong></p>
+                <p>${p.description}</p>
+            </div>
+        `;
+    });
+
+    // Tambahkan tombol lanjut ke nota
+    nextBtnBox.innerHTML = `
+        <a href="nota.html" class="next-btn">Lanjut ke Nota</a>
+    `;
+}
+
+renderPayments();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coffee Campus - Our Story</title>
+
+<style>
+/* BACKGROUND */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }
+
+/* Hero Section */
+.hero {
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Container story */
+.story-container {
+    max-width: 850px;
+    margin: auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+    animation: slideUp 1.2s ease-out;
+}
+
+.story-container h2 {
+    color: #00ffcc;
+    font-size: 28px;
+    text-align: center;
+}
+
+.story-container p {
+    line-height: 1.7;
+    font-size: 17px;
+    margin-top: 15px;
+}
+
+/* Divider */
+.line {
+    width: 120px;
+    height: 4px;
+    background: #00ffcc;
+    margin: 10px auto 20px;
+    border-radius: 10px;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px);}
+    to   { opacity: 1; transform: translateY(0);}
+}
+
+/* FOOTER */
+footer {
+  background-color: rgba(0, 38, 208, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 60px;
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============================ -->
+<!--          HEADER              -->
+<!-- ============================ -->
+<header>
+  <div class="navbar">
+    <div class="logo">
+      <img src="logo.png">
+      <h1>Coffe Campuss</h1>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="pages.html">Pages</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- PROFIL (LOGIN) -->
+        <li id="profileLi" style="display:none;">
+          <a href="member-dashboard.html">
+            <img id="navProfileImg" class="profile-icon">
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================= -->
+<!--           HERO TITLE          -->
+<!-- ============================= -->
+<section class="hero">
+    <h1>Our Story</h1>
+    <p style="font-size:18px;color:#e0e0e0;">Perjalanan Coffee Campus dari awal hingga berkembang seperti sekarang.</p>
+</section>
+
+<!-- ============================= -->
+<!--        CONTENT STORY          -->
+<!-- ============================= -->
+<div class="story-container">
+
+    <h2>Bagaimana Semua Dimulai</h2>
+    <div class="line"></div>
+
+    <p>
+        Perjalanan Coffee Campus dimulai pada November 2024. Inspirasi usaha ini lahir dari kakak saya sendiri, 
+        <strong>Yosi Adi Pratama</strong>, yang memiliki kedai kopi di Jakarta bernama <strong>feelcoffee.jkt</strong>. 
+        Saat saya masih kuliah semester 2, dan pada saat libur kuliah, saya belajar banyak tentang dunia kopi dengan 
+        bekerja sebagai barista di kedai kakak saya selama kurang lebih 2 bulan.
+    </p>
+
+    <p>
+        Pengalaman itulah yang akhirnya mendorong saya untuk membuka usaha sendiri dengan dukungan dari kakak saya 
+        ketika memasuki semester 3. Dengan semangat dan modal pengetahuan yang saya dapatkan, saya memulai usaha 
+        street coffee bernama <strong>Coffee Campus</strong> di akhir tahun 2024. Nama Coffee Campus saya ambil karena saya 
+        menjalani usaha ini sambil kuliah.
+    </p>
+
+    <p>
+        Hingga hari ini, <strong>Alhamdulillah</strong>, Coffee Campus masih bertahan dan terus berkembang.
+    </p>
+
+</div>
+
+<br><br>
+
+<footer>
+    <p>© 2025 Coffee Campuss | Designed by Kelompok 2</p>
+</footer>
+
+<!-- ============================= -->
+<!--    AUTO UPDATE FOTO PROFIL    -->
+<!-- ============================= -->
+<script>
+let userData = JSON.parse(localStorage.getItem("userData"));
+
+if (userData) {
+    document.getElementById("signupLi").style.display = "none";
+    document.getElementById("profileLi").style.display = "block";
+
+    let img = document.getElementById("navProfileImg");
+
+    if (userData.foto && userData.foto !== "") {
+        img.src = userData.foto;
+    } else {
+        img.src = "profile.jpg";
+    }
+}
+</script>
+
+</body>
+</html>

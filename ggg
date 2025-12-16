@@ -1,0 +1,71 @@
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }

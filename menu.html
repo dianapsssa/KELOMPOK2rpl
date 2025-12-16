@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Coffee Campus</title>
+
+<style>
+/* === STYLE TETAP SAMA — TIDAK DIUBAH === */
+/* (SEMUA STYLE DARI KODE ASLI KAMU TETAP DIPERTAHANKAN) */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }
+
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit:cover;
+  border: 2px solid #ffb300;
+}
+
+/* === SEMUA STYLE MENU TETAP SAMA === */
+
+h2 {
+  text-align: center;
+  margin-top: 35px;
+  font-size: 30px;
+  color: #00ffcc;
+}
+
+.menu-grid {
+  width: 90%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.item {
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  text-align: center;
+  border-radius:20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  opacity:0;
+  transform:translateY(40px) scale(0.9);
+  animation:itemPop 0.6s ease forwards;
+}
+
+.item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius:14px;
+}
+
+@keyframes itemPop {
+  0% {opacity:0; transform:translateY(40px) scale(.9);}
+  100% {opacity:1; transform:translateY(0) scale(1);}
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============================
+       HEADER (UPDATED)
+============================ -->
+<header>
+  <div class="navbar">
+    <div class="logo">
+      <img src="logo.png">
+      <h1>Coffe Campuss</h1>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="pages.html">Pages</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- PROFIL (LOGIN) -->
+        <li id="profileLi" style="display:none;">
+          <a href="member-dashboard.html">
+            <img id="navProfileImg" class="profile-icon">
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<h2>Menu Coffee Campus</h2>
+
+<div class="menu-grid" id="menuList"></div>
+
+<!-- ====================================
+      RENDER MENU
+==================================== -->
+<script>
+let menuData = JSON.parse(localStorage.getItem("menuData")) || [];
+
+function renderMenu() {
+    const div = document.getElementById("menuList");
+    div.innerHTML = "";
+
+    if (menuData.length === 0) {
+        div.innerHTML =
+          "<h3 style='grid-column:1/-1;text-align:center;'>Belum ada menu ditambahkan admin</h3>";
+        return;
+    }
+
+    menuData.forEach(m => {
+        div.innerHTML += `
+          <div class="item">
+            <img src="${m.img}">
+            <h3>${m.name}</h3>
+            <p>Rp ${m.price.toLocaleString()}</p>
+          </div>
+        `;
+    });
+}
+
+renderMenu();
+</script>
+
+
+<!-- ====================================
+      AUTO LOAD FOTO PROFIL
+==================================== -->
+<script>
+let userData = JSON.parse(localStorage.getItem("userData"));
+
+if (userData) {
+    // Tampilkan profil, sembunyikan signup
+    document.getElementById("profileLi").style.display = "block";
+    document.getElementById("signupLi").style.display = "none";
+
+    let img = document.getElementById("navProfileImg");
+
+    if (userData.foto && userData.foto !== "") {
+        img.src = userData.foto;
+    } else {
+        img.src = "profile.jpg";
+    }
+}
+</script>
+
+</body>
+</html>

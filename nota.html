@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Pembelian - Coffe Campus</title>
+
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background: #f6f5f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nota-container {
+            width: 380px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0d4d35;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #0d4d35;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th,
+        table td {
+            padding: 8px 4px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .total {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            color: #0d4d35;
+        }
+
+        #qris-box {
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        #qris-box img {
+            width: 160px;
+            border-radius: 10px;
+        }
+
+        #printBtn,
+        #backBtn {
+            display: none;
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            background: #0d4d35;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #backBtn {
+            background: #1b704f;
+        }
+
+        @media print {
+            #printBtn,
+            #backBtn {
+                display: none !important;
+            }
+
+            #qris-box {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nota-container">
+        <h2>Coffe Campus</h2>
+        <div class="brand">Fresh • Brewed • Quality</div>
+
+        <div class="info">No. Transaksi: <span id="noTransaksi"></span></div>
+        <div class="info">Nama Pelanggan: <b id="namaPelanggan"></b></div>
+        <div class="info">Metode Pembayaran: <b id="metode"></b></div>
+        <div class="info">Tanggal & Waktu: <span id="tanggalWaktu"></span></div>
+        <div class="info">Nomor Antrian: <b id="noAntrian" style="font-size:18px;"></b></div>
+
+        <table id="tabelNota">
+            <thead>
+                <tr>
+                    <th>Menu</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="total">Total: Rp <span id="totalAkhir"></span></div>
+
+        <div id="qris-box">
+            <p><b>Scan QRIS untuk pembayaran</b></p>
+            <img src="EXQris.jpeg" alt="QRIS">
+        </div>
+
+        <button id="printBtn">Cetak Nota</button>
+        <button id="backBtn">Kembali ke Menu</button>
+    </div>
+
+    <script>
+    // Cek apakah halaman dibuka setelah transaksi berhasil
+    const urlParams = new URLSearchParams(window.location.search);
+    const sudahSelesai = urlParams.get("done");
+
+    // Ambil data keranjang
+    let keranjang = JSON.parse(localStorage.getItem("keranjang")) || [];
+    let total = localStorage.getItem("totalHarga") || 0;
+    let nama = localStorage.getItem("namaPelanggan") || "-";
+    let metode = localStorage.getItem("metodePembayaran") || "-";
+
+    document.getElementById("namaPelanggan").innerText = nama;
+    document.getElementById("metode").innerText = metode;
+    document.getElementById("totalAkhir").innerText = parseInt(total).toLocaleString();
+
+    // Generate nomor transaksi
+    const now = new Date();
+    const noTrans = "CC" + now.getTime();
+    document.getElementById("noTransaksi").innerText = noTrans;
+
+    // Sistem antrian
+    let lastQueue = localStorage.getItem("lastQueue") || 0;
+    lastQueue++;
+    if (lastQueue > 100) lastQueue = 1;
+    localStorage.setItem("lastQueue", lastQueue);
+    document.getElementById("noAntrian").innerText = "#" + lastQueue;
+
+    // Update waktu
+    function updateClock() {
+        const timeNow = new Date();
+        document.getElementById("tanggalWaktu").innerText =
+            timeNow.toLocaleDateString("id-ID") + " " + timeNow.toLocaleTimeString("id-ID");
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Isi tabel keranjang
+    let tbody = document.querySelector("#tabelNota tbody");
+    keranjang.forEach(item => {
+        let row = `
+            <tr>
+                <td>${item.nama}</td>
+                <td>${item.qty}</td>
+                <td>Rp ${(item.harga * item.qty).toLocaleString()}</td>
+            </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    // Tampilkan QRIS jika metode Qris
+    if (metode === "QRIS") {
+        document.getElementById("qris-box").style.display = "block";
+    }
+
+    // Jika halaman dibuka setelah transaksi selesai
+    if (!sudahSelesai) {
+
+        let riwayat = JSON.parse(localStorage.getItem("riwayatPesanan")) || [];
+
+        let transaksiBaru = {
+            id: noTrans,
+            pelanggan: nama,
+            metode: metode,
+            total: total,
+            antrian: lastQueue,
+            tanggal: now.toLocaleDateString("id-ID"),
+            waktu: now.toLocaleTimeString("id-ID"),
+            items: keranjang
+        };
+
+        riwayat.push(transaksiBaru);
+        localStorage.setItem("riwayatPesanan", JSON.stringify(riwayat));
+
+        // Redirect otomatis ke halaman pesanan berhasil
+        setTimeout(() => {
+            window.location.href = "pesanan-berhasil.html";
+        }, 2000);
+
+    } else {
+
+        // Jika sudah selesai → tampilkan tombol
+        document.getElementById("printBtn").style.display = "block";
+        document.getElementById("backBtn").style.display = "block";
+
+        // 🔥 Cetak otomatis setelah halaman nota selesai dibuka
+        setTimeout(() => {
+            window.print();
+        }, 800);
+    }
+
+    // Tombol cetak manual
+    document.getElementById("printBtn").addEventListener("click", () => {
+        window.print();
+    });
+
+    // Tombol kembali
+    document.getElementById("backBtn").addEventListener("click", () => {
+        window.location.href = "menu.html";
+    });
+    </script>
+
+</body>
+
+</html>

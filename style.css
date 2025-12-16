@@ -1,0 +1,343 @@
+/* Atur gambar background fullscreen transparan */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+/* Overlay hitam semi-transparan agar teks tetap terbaca */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Brand / Teks Coffe Campuss */
+.brand {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }
+
+.booktable {
+  background-color: #ffb300;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.booktable:hover {
+  background-color: #e09e00;
+}
+
+/* Tambahkan jarak antara konten dan header */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.hero {
+  margin-top: 90px; /* supaya konten tidak ketutupan header */
+}
+
+/* Hero Section */
+.hero {
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.book-btn {
+  background-color: #ffb300;
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.book-btn:hover {
+  background-color: #e09e00;
+}
+
+.btn-primary {
+  background-color: rgb(0, 255, 247);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* MENU SECTION */
+.menu-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+.menu-section h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #0033dc;
+}
+.menu-section p {
+  color: #fffcfc;
+  margin-bottom: 40px;
+}
+.menu-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+.menu-card {
+  background-color: #fff;
+  width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: 0.3s;
+}
+.menu-card:hover {
+  transform: translateY(-5px);
+}
+.menu-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.menu-card h3 {
+  margin: 15px 0 5px;
+  color: #3e2723;
+}
+.menu-card .price {
+  color: #8d6e63;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* FOOTER */
+footer {
+  background-color: rgba(0, 38, 208, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 60px;
+}
+
+/*ukuran logo */
+.logo img {
+  width: 100px;
+  height: auto;
+  display: flex;
+}
+
+
+.popular-menu {
+  text-align: center;
+  color: #fff;
+  padding: 50px 20px;
+}
+
+.popular-menu h2 {
+  font-size: 2.5em;
+  color: #00ffc3;
+  margin-bottom: 15px;
+}
+
+.popular-menu p {
+  color: #e0e0e0;
+  font-size: 1.1em;
+  margin-bottom: 40px;
+}
+
+
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 35px; 
+  justify-items: center;
+  padding: 0 40px;
+}
+
+.menu-item {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: scale(0);
+  opacity: 0;
+  animation: bubbleUp 0.8s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.menu-item:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+
+.menu-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 4px solid #ffb300;
+  transition: transform 0.4s ease;
+}
+
+.menu-item:hover img {
+  transform: scale(1.08);
+}
+
+
+.menu-item h3 {
+  margin: 15px 0 5px;
+  font-size: 20px;
+  color: #2c2c2c;
+}
+
+.menu-item .price {
+  color: #ff9800;
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 17px;
+}
+
+.menu-item p {
+  font-size: 14px;
+  color: #555;
+  padding: 0 15px 20px;
+}
+
+
+@keyframes bubbleUp {
+  0% {
+    transform: scale(0.5) translateY(40px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) translateY(-8px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+menu-item:nth-child(1) { animation-delay: 0.2s; }
+.menu-item:nth-child(2) { animation-delay: 0.4s; }
+.menu-item:nth-child(3) { animation-delay: 0.6s; }
+.menu-item:nth-child(4) { animation-delay: 0.8s; }
+.menu-item:nth-child(5) { animation-delay: 1s; }
+.menu-item:nth-child(6) { animation-delay: 1.2s; }
+.menu-item:nth-child(7) { animation-delay: 1.4s; }
+.menu-item:nth-child(8) { animation-delay: 1.6s; }
+.menu-item:nth-child(9) { animation-delay: 1.8s; }
+.menu-item:nth-child(10) { animation-delay: 2s; }
+.menu-item:nth-child(11) { animation-delay: 2.2s; }
+.menu-item:nth-child(12) { animation-delay: 2.4s; }
+.menu-item:nth-child(13) { animation-delay: 2.6s; }
+.menu-item:nth-child(14) { animation-delay: 2.8s; }
+.menu-item:nth-child(15) { animation-delay: 3s; }
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+

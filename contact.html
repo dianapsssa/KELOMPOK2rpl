@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact – Coffee Campus</title>
+
+    <style>
+/* Atur gambar background fullscreen transparan */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+/* Overlay hitam semi-transparan agar teks tetap terbaca */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }
+
+/* CONTACT CARD */
+.contact-card {
+  width: 90%;
+  max-width: 500px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 25px;
+  margin: 50px auto;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  backdrop-filter: blur(3px);
+}
+
+.contact-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  border-bottom: 2px solid white;
+  padding-bottom: 8px;
+}
+
+.info-item {
+  margin-bottom: 20px;
+}
+
+.info-item label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.info-item p {
+  font-size: 16px;
+  margin-top: 5px;
+  opacity: 0.9;
+}
+
+/* Button WhatsApp */
+.wa-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  margin-top: 25px;
+  background: #25D366;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.wa-btn:hover { background: #1ea955; }
+
+/* Footer */
+footer {
+  background-color: rgba(0, 38, 208, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 60px;
+}
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER / NAVBAR -->
+<header>
+  <div class="navbar">
+    <div class="logo">
+      <img src="logo.png">
+      <h1>Coffe Campuss</h1>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="pages.html">Pages</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- PROFIL (LOGIN) -->
+        <li id="profileLi" style="display:none;">
+          <a href="member-dashboard.html">
+            <img id="navProfileImg" class="profile-icon">
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- CONTACT CARD -->
+<div class="contact-card">
+    <h2>Informasi Kontak</h2>
+
+    <div class="info-item">
+        <label>Alamat</label>
+        <p>Kotabumi, Samping Bank Lampung</p>
+    </div>
+
+    <div class="info-item">
+        <label>Nomor HP</label>
+        <p>089680640264</p>
+    </div>
+
+    <div class="info-item">
+        <label>Email</label>
+        <p>coffeecampus@gmail.com</p>
+    </div>
+
+    <div class="info-item">
+        <label>Jam Operasional</label>
+        <p>16.00 – 22.00 (Setiap Hari)</p>
+    </div>
+
+    <a class="wa-btn" href="https://wa.me/6289680640264" target="_blank">Chat via WhatsApp</a>
+</div>
+
+<footer>
+    <p>© 2025 Coffee Campuss | Designed by Kelompok 2</p>
+</footer>
+
+<!-- ========================== -->
+<!-- AUTO UPDATE FOTO PROFIL   -->
+<!-- ========================== -->
+<script>
+let userData = JSON.parse(localStorage.getItem("userData"));
+
+if (userData) {
+    // Sembunyikan tombol Sign Up
+    document.getElementById("signupLi").style.display = "none";
+
+    // Tampilkan foto profil
+    document.getElementById("profileLi").style.display = "block";
+
+    let img = document.getElementById("navProfileImg");
+
+    // Jika user punya foto → tampilkan
+    if (userData.foto && userData.foto !== "") {
+        img.src = userData.foto;
+    } 
+    // Jika tidak ada → default
+    else {
+        img.src = "profile.jpg";
+    }
+}
+</script>
+
+</body>
+</html>

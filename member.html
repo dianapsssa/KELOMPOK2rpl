@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Member Coffee Campus</title>
+
+<style>
+body {
+    background:#0d1117;
+    color:white;
+    font-family:Arial, sans-serif;
+}
+
+.box {
+    width:350px;
+    margin:60px auto;
+    background:#161b22;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+input {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:6px;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    background:#00bfff;
+    border:none;
+    border-radius:6px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover {
+    background:#00a6d6;
+}
+
+.toggle {
+    text-align:center;
+    color:#00bfff;
+    cursor:pointer;
+    margin-top:10px;
+}
+.toggle:hover { text-decoration:underline; }
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="box" id="loginBox">
+    <h2 style="text-align:center;">Login Member</h2>
+
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPass" placeholder="Password">
+
+    <button onclick="loginMember()">Login</button>
+    <div class="toggle" onclick="showRegister()">Belum punya akun? Daftar</div>
+</div>
+
+<!-- ================= REGISTER ================= -->
+<div class="box" id="registerBox" style="display:none;">
+    <h2 style="text-align:center;">Daftar Member</h2>
+
+    <input type="text" id="regName" placeholder="Nama Lengkap">
+    <input type="text" id="regPhone" placeholder="Nomor HP">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPass" placeholder="Password">
+    <input type="file" id="regPhoto" accept="image/*">
+
+    <button onclick="registerMember()">Daftar</button>
+    <div class="toggle" onclick="showLogin()">Sudah punya akun? Login</div>
+</div>
+
+<script>
+/* =====================================================
+   DATABASE MEMBER (MULTI ACCOUNT)
+===================================================== */
+let memberDB = JSON.parse(localStorage.getItem("memberDB")) || [];
+localStorage.setItem("memberDB", JSON.stringify(memberDB));
+
+/* =====================================================
+   SWITCH FORM
+===================================================== */
+function showRegister() {
+    loginBox.style.display = "none";
+    registerBox.style.display = "block";
+}
+
+function showLogin() {
+    loginBox.style.display = "block";
+    registerBox.style.display = "none";
+}
+
+/* =====================================================
+   REGISTER MEMBER
+===================================================== */
+function registerMember() {
+    let name  = regName.value.trim();
+    let phone = regPhone.value.trim();
+    let email = regEmail.value.trim();
+    let pass  = regPass.value.trim();
+    let photo = regPhoto.files[0];
+
+    if (!name || !phone || !email || !pass)
+        return alert("Semua data wajib diisi!");
+
+    if (memberDB.some(m => m.email === email))
+        return alert("Email sudah terdaftar!");
+
+    if (photo) {
+        let reader = new FileReader();
+        reader.onload = () => saveMember(name, phone, email, pass, reader.result);
+        reader.readAsDataURL(photo);
+    } else {
+        saveMember(name, phone, email, pass, "profile.jpg");
+    }
+}
+
+function saveMember(name, phone, email, pass, photo) {
+    let member = {
+        id: "U" + Date.now(),
+        nama: name,
+        hp: phone,
+        email: email,
+        password: pass,
+        foto: photo,
+
+        // DATA DEFAULT DASHBOARD
+        level: "Silver",
+        point: 0,
+        pesanan: 0
+    };
+
+    memberDB.push(member);
+    localStorage.setItem("memberDB", JSON.stringify(memberDB));
+
+    alert("Pendaftaran berhasil, silakan login");
+    showLogin();
+}
+
+/* =====================================================
+   LOGIN MEMBER (SESSION OTOMATIS)
+===================================================== */
+function loginMember() {
+    let email = loginEmail.value.trim();
+    let pass  = loginPass.value.trim();
+
+    let user = memberDB.find(
+        m => m.email === email && m.password === pass
+    );
+
+    if (!user) return alert("Email atau password salah!");
+
+    // 🔥 SIMPAN LOGIN OTOMATIS (KUNCI UTAMA)
+    localStorage.setItem("loginUser", JSON.stringify(user));
+
+    alert("Login berhasil!");
+    window.location.href = "member-dashboard.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact – Coffee Campus</title>
+
+<style>
+/* BACKGROUND */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('baground.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #001a66, #0033cc);
+  padding: 10px 40px;
+  height: 75px;
+}
+
+.navbar {
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+/* Menu */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: color 0.3s;
+  padding: 10px;
+}
+
+nav ul li a:hover {
+  color: #00ffc3;
+}
+
+/* Foto profil navbar */
+.profile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+}
+
+/* Tombol Sign Up */
+.signup-btn {
+  background-color: #ffb300;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover { background-color: #e09e00; }
+
+/* CARD CERITA */
+.contact-card {
+  width: 90%;
+  max-width: 550px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 25px;
+  margin: 70px auto;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  backdrop-filter: blur(3px);
+  position: relative;
+  z-index: 2;
+}
+
+.contact-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  border-bottom: 2px solid white;
+  padding-bottom: 8px;
+}
+
+.contact-card p {
+  font-size: 17px;
+  line-height: 1.6;
+  opacity: 0.95;
+  text-align: justify;
+}
+
+/* BUBBLE */
+.random-bubbles {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 180px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bubble {
+    width: 95px;
+    height: 95px;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.4);
+    object-fit: cover;
+    opacity: 0.9;
+    animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
+}
+
+/* FOOTER */
+footer {
+  background-color: rgba(0, 38, 208, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 60px;
+}
+</style>
+
+</head>
+<body>
+
+<!-- ================================ -->
+<!-- HEADER + FOTO PROFIL (UPDATED)  -->
+<!-- ================================ -->
+<header>
+  <div class="navbar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo" />
+      <div class="title">
+        <h1>Coffee Campuss</h1>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="pages.html">Pages</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- FOTO PROFIL USER (AUTO UPDATE) -->
+        <li id="profileLi" style="display:none;">
+          <a href="member-dashboard.html">
+            <img id="navProfileImg" src="profile.jpg" class="profile-icon">
+          </a>
+        </li>
+
+        <!-- SIGN UP DEFAULT -->
+        <li id="signupLi">
+          <a href="signup.html" class="signup-btn">Sign Up</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+
+<!-- BUBBLE EFFECT -->
+<div class="random-bubbles">
+    <img src="menu3.jpeg" class="bubble">
+    <img src="menu2.jpeg" class="bubble">
+    <img src="menu1.jpeg" class="bubble">
+    <img src="menu4.jpeg" class="bubble">
+    <img src="menu3.jpeg" class="bubble">
+    <img src="menu2.jpeg" class="bubble">
+    <img src="menu1.jpeg" class="bubble">
+    <img src="menu1.jpeg" class="bubble">
+    <img src="menu2.jpeg" class="bubble">
+    <img src="menu3.jpeg" class="bubble">
+</div>
+
+
+
+<!-- CARD CERITA -->
+<div class="contact-card">
+    <h2>Cerita Coffee Campus</h2>
+
+    <p>
+    Coffee Campus berdiri dari kecintaan anak-anak kampus terhadap kopi dan suasana nongkrong yang tenang.
+    </p>
+
+    <br>
+
+    <p>
+    Dengan konsep sederhana namun hangat, Coffee Campus menjadi tempat nyaman untuk mahasiswa.
+    </p>
+</div>
+
+<footer>
+    <p>© 2025 Coffee Campuss | Designed by Kelompok 2</p>
+</footer>
+
+<!-- ===================================== -->
+<!--   AUTO UPDATE FOTO PROFIL NAVIGATION  -->
+<!-- ===================================== -->
+<script>
+let userData = JSON.parse(localStorage.getItem("userData"));
+
+if (userData) {
+    document.getElementById("signupLi").style.display = "none";
+    document.getElementById("profileLi").style.display = "block";
+
+    let img = document.getElementById("navProfileImg");
+
+    if (userData.foto && userData.foto !== "") {
+        img.src = userData.foto;
+    } else {
+        img.src = "profile.jpg";
+    }
+}
+</script>
+
+<script>
+const bubbles = document.querySelectorAll(".bubble");
+const container = document.querySelector(".random-bubbles");
+
+let usedPositions = [];
+
+function isOverlap(x, y, size) {
+    for (let pos of usedPositions) {
+        let distance = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2));
+        if (distance < size + 20) return true;
+    }
+    return false;
+}
+
+bubbles.forEach((bubble) => {
+    let size = 120;
+    let maxX = container.clientWidth - size;
+    let maxY = container.clientHeight - size;
+    let x, y, tries = 0;
+
+    do {
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+        tries++;
+        if (tries > 50) break;
+    } while (isOverlap(x, y, size));
+
+    usedPositions.push({ x, y });
+
+    bubble.style.left = x + "px";
+    bubble.style.top = y + "px";
+    bubble.style.animationDelay = (Math.random() * 1.5) + "s";
+});
+</script>
+
+</body>
+</html>
